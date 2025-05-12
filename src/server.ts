@@ -42,7 +42,10 @@ appServer.options('*', cors(corsOptions));
 appServer.use(express.json());
 appServer.use(express.urlencoded({ extended: true }));
 
-appServer.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+if (process.env.NODE_ENV === 'development') {
+    appServer.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
+
 
 // Use the router with the /api prefix
 appServer.use('/api', router);
