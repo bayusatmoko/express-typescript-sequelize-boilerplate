@@ -1,12 +1,8 @@
-export interface User {
+export interface Role {
     id?: string;
     organizationId: string;
-    managerId?: string;
-    roleId: string;
-    email: string;
     name: string;
-    username: string;
-    password: string;
+    level: number;
     created_at: string | undefined;
     updated_at: string | undefined;
 }

@@ -1,6 +1,8 @@
 import logger from '@/utils/logger';
 import Sequelize from 'sequelize';
 import userModel from './models/user.model';
+import organizationModel from './models/organization.model';
+import roleModel from './models/role.model';
 import {
     DB_DIALECT,
     DB_HOST,
@@ -40,8 +42,19 @@ const sequelize = new Sequelize.Sequelize(
 
 sequelize.authenticate();
 
-export const DB = {
+const models = {
     Users: userModel(sequelize),
+    Organizations: organizationModel(sequelize),
+    Roles: roleModel(sequelize),
+};
+
+// associate
+models.Users.associate(models);
+models.Organizations.associate(models);
+models.Roles.associate(models);
+
+export const DB = {
+    ...models,
     sequelize, // connection instance (RAW queries)
     Sequelize, // library
 };

@@ -14,6 +14,20 @@ export const validateSignUp = (userData: any) => {
             .guid({ version: 'uuidv4' })
             .optional()
             .messages({ 'string.guid': 'User ID must be in UUID format' }),
+        organizationId: Joi.string()
+            .guid({ version: 'uuidv4' })
+            .required()
+            .messages({
+                'string.guid': 'Organization ID must be in UUID format',
+            }),
+        roleId: Joi.string()
+            .guid({ version: 'uuidv4' })
+            .required()
+            .messages({ 'string.guid': 'Role ID must be in UUID format' }),
+        managerId: Joi.string()
+            .guid({ version: 'uuidv4' })
+            .optional()
+            .messages({ 'string.guid': 'Manager ID must be in UUID format' }),
         email: Joi.string().email().required().messages({
             'string.email': 'Email format is invalid',
             'any.required': 'Email is required',
@@ -25,11 +39,7 @@ export const validateSignUp = (userData: any) => {
         username: Joi.string().optional(),
         password: Joi.string()
             .min(8)
-            .pattern(
-                new RegExp(
-                    '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z\\d]).+$',
-                ),
-            )
+            .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).+$/)
             .required()
             .messages({
                 'string.min': 'Password must have at least 8 characters.',
