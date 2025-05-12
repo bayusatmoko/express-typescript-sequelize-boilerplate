@@ -7,7 +7,10 @@ import repo from '../../../src/modules/auth/auth.repo';
 import { User } from '../../../src/interfaces/user.interfaces';
 import { DB } from '../../../src/database';
 import { hash, compareSync } from 'bcrypt';
-import { validateSignUp, validateSignIn } from '../../../src/modules/auth/auth.validator';
+import {
+    validateSignUp,
+    validateSignIn,
+} from '../../../src/modules/auth/auth.validator';
 import { generateJWT } from '../../../src/middlewares/jwt.service';
 
 jest.mock('../../../src/modules/auth/auth.repo');
@@ -27,7 +30,7 @@ jest.mock('bcrypt', () => ({
 
 jest.mock('../../../src/modules/auth/auth.validator', () => ({
     validateSignUp: jest.fn(),
-    validateSignIn: jest.fn(() => ({ error: null })), 
+    validateSignIn: jest.fn(() => ({ error: null })),
 }));
 
 jest.mock('../../../src/middlewares/jwt.service');
@@ -43,6 +46,8 @@ describe('signUpService', () => {
             name: 'Existing User',
             username: 'existinguser',
             password: 'Password123!',
+            organizationId: 'org-1',
+            roleId: 'role-1',
             created_at: undefined,
             updated_at: undefined,
         };
@@ -65,6 +70,9 @@ describe('signUpService', () => {
             name: 'Invalid User',
             username: 'invaliduser',
             password: 'Password123!',
+            managerId: '',
+            organizationId: '',
+            roleId: '',
             created_at: undefined,
             updated_at: undefined,
         };
@@ -87,6 +95,9 @@ describe('signUpService', () => {
             name: 'New User',
             username: 'newuser',
             password: 'Password123!',
+            managerId: '',
+            organizationId: '',
+            roleId: '',
             created_at: undefined,
             updated_at: undefined,
         };
@@ -115,6 +126,9 @@ describe('signInService', () => {
         name: 'Test User',
         username: 'testuser',
         password: 'hashed_password',
+        managerId: '',
+        organizationId: '',
+        roleId: '',
         created_at: undefined,
         updated_at: undefined,
     };
@@ -129,6 +143,9 @@ describe('signInService', () => {
             password: 'correct_password',
             name: 'Test User',
             username: 'testuser',
+            managerId: '',
+            organizationId: '',
+            roleId: '',
             created_at: undefined,
             updated_at: undefined,
         });
@@ -150,6 +167,9 @@ describe('signInService', () => {
                 password: 'wrong_password',
                 name: 'Test User',
                 username: 'testuser',
+                managerId: '',
+                organizationId: '',
+                roleId: '',
                 created_at: undefined,
                 updated_at: undefined,
             }),
@@ -166,6 +186,9 @@ describe('signInService', () => {
                 password: 'wrong_password',
                 name: 'Test User',
                 username: 'testuser',
+                managerId: '',
+                organizationId: '',
+                roleId: '',
                 created_at: undefined,
                 updated_at: undefined,
             }),
@@ -174,19 +197,23 @@ describe('signInService', () => {
 
     it('should throw 400 error if validation fails', async () => {
         (validateSignIn as jest.Mock).mockReturnValue({
-            error: { details: [{ message: 'Email and password are required' }] }
+            error: {
+                details: [{ message: 'Email and password are required' }],
+            },
         });
-    
+
         await expect(
             signInService({
                 email: '',
                 password: '',
                 name: '',
                 username: '',
+                managerId: '',
+                organizationId: '',
+                roleId: '',
                 created_at: undefined,
                 updated_at: undefined,
             }),
         ).rejects.toThrow('Email and password are required');
     });
-    
 });

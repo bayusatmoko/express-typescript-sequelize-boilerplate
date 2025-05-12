@@ -1,4 +1,5 @@
 import { Organization } from '@/interfaces/organization.interfaces';
+import { Models } from '@/interfaces/models.interfaces';
 import { Sequelize, DataTypes, Model, Optional } from 'sequelize';
 
 export type OrganizationCreationAttributes = Optional<Organization, 'id'>;
@@ -14,7 +15,7 @@ export class OrganizationModel
 
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
-    public static associate = models => {
+    public static associate = (models: Models) => {
         OrganizationModel.hasMany(models.Users, {
             foreignKey: 'organizationId',
             as: 'users',

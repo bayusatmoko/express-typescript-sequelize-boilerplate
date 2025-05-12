@@ -1,4 +1,5 @@
 import { Role } from '@/interfaces/role.interfaces';
+import { Models } from '@/interfaces/models.interfaces';
 import { Sequelize, DataTypes, Model, Optional } from 'sequelize';
 
 export type RoleCreationAttributes = Optional<Role, 'id'>;
@@ -16,7 +17,7 @@ export class RoleModel
 
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
-    public static associate = models => {
+    public static associate = (models: Models) => {
         RoleModel.belongsTo(models.Organizations, {
             as: 'organizations',
             foreignKey: 'organizationId',
